@@ -10,6 +10,7 @@ function App() {
   const [opportunities, setOpportunities] = useState(seedOpportunities)
   const [savedIds, setSavedIds] = useState([])
 
+  // Search and filter states
   const [search, setSearch] = useState("")
   const [category, setCategory] = useState("All")
   const [sortBy, setSortBy] = useState("date")
@@ -36,7 +37,7 @@ function App() {
     ])
   }
 
-  // Reset filters
+  // Reset all search and filter settings
   function handleReset() {
     setSearch("")
     setCategory("All")
@@ -124,7 +125,7 @@ function App() {
           onReset={handleReset}
         />
 
-        {/* Demo buttons */}
+        {/* Conditional rendering demo */}
         <section className="mb-6 mt-8 rounded-xl bg-white p-5 shadow-sm">
           <h2 className="mb-3 text-lg font-bold text-slate-800">
             Conditional Rendering Demo
@@ -190,6 +191,7 @@ function App() {
             opportunities={sortedOpportunities}
             savedIds={savedIds}
             onToggleSave={handleToggleSave}
+            onReset={handleReset}
           />
         )}
 

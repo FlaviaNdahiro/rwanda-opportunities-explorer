@@ -1,17 +1,32 @@
 
-import OpportunityCard from "./OpportunityCard" 
+import OpportunityCard from "./OpportunityCard"
+import Button from "./Button"
 
-function OpportunityList({ opportunities, savedIds, onToggleSave }) {
+function OpportunityList({
+  opportunities,
+  savedIds,
+  onToggleSave,
+  onReset,
+}) {
   if (opportunities.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm">
+        <div className="mb-4 text-5xl">🔍</div>
+
         <h3 className="text-xl font-bold text-slate-800">
           No opportunities found
         </h3>
 
-        <p className="mt-2 text-slate-500">
-          Try changing your search or filters to find opportunities.
+        <p className="mx-auto mt-2 max-w-md text-slate-500">
+          We couldn't find any opportunities matching your search or filters.
+          Try different keywords or reset your filters.
         </p>
+
+        <div className="mt-6">
+          <Button onClick={onReset}>
+            Reset Filters
+          </Button>
+        </div>
       </div>
     )
   }
