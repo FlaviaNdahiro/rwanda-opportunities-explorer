@@ -13,6 +13,7 @@ function OpportunityCard({ opportunity, isSaved, onToggleSave }) {
 
   return (
     <article className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+
       {/* Opportunity badges */}
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <Badge color="blue">{opportunity.category}</Badge>
@@ -28,19 +29,25 @@ function OpportunityCard({ opportunity, isSaved, onToggleSave }) {
         {opportunity.availableSeats === 0 && (
           <Badge color="red">Fully booked</Badge>
         )}
+
+        {opportunity.features && (
+          <Badge color="green">Special Features</Badge>
+        )}
       </div>
 
-      {/* Opportunity information */}
+      {/* Opportunity title */}
       <h3 className="text-lg font-bold text-slate-900">
         {opportunity.title}
       </h3>
 
+      {/* Description */}
       <p className="mt-2 text-sm leading-6 text-slate-600">
         {opportunity.description}
       </p>
 
       {/* Opportunity details */}
       <div className="mt-5 flex-1 space-y-3 border-t border-slate-100 pt-4 text-sm text-slate-600">
+
         <p>
           <span className="mr-2">📍</span>
           {opportunity.city}
@@ -73,6 +80,7 @@ function OpportunityCard({ opportunity, isSaved, onToggleSave }) {
           {isSaved ? "Unsave" : "Save Opportunity"}
         </Button>
       </div>
+
     </article>
   )
 }
