@@ -3,7 +3,7 @@ import { useState } from "react"
 import Button from "./Button"
 
 function AddOpportunityForm({ onAddOpportunity }) {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     title: "",
     category: "Technology",
     city: "",
@@ -11,10 +11,24 @@ function AddOpportunityForm({ onAddOpportunity }) {
     capacity: "",
     price: "",
     description: "",
-  })
+  }
 
+  const [formData, setFormData] = useState(initialFormData)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
+  // Get today's date in YYYY-MM-DD format
+  function getTodayDate() {
+    const today = new Date()
+
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, "0")
+    const day = String(today.getDate()).padStart(2, "0")
+
+    return `${year}-${month}-${day}`
+  }
+
+  // Handle input changes
   function handleChange(e) {
     const { name, value } = e.target
 
@@ -22,27 +36,26 @@ function AddOpportunityForm({ onAddOpportunity }) {
       ...previousData,
       [name]: value,
     }))
-  }
-
-  function handleClear() {
-    setFormData({
-      title: "",
-      category: "Technology",
-      city: "",
-      date: "",
-      capacity: "",
-      price: "",
-      description: "",
-    })
 
     setError("")
+    setSuccess("")
   }
 
+  // Clear the form
+  function handleClear() {
+    setFormData(initialFormData)
+    setError("")
+    setSuccess("")
+  }
+
+  // Submit the form
   function handleSubmit(e) {
     e.preventDefault()
-    setError("")
 
-    // Check required text fields
+    setError("")
+    setSuccess("")
+
+    // Validate required text fields
     if (
       !formData.title.trim() ||
       !formData.city.trim() ||
@@ -53,17 +66,13 @@ function AddOpportunityForm({ onAddOpportunity }) {
       return
     }
 
-    // Check date
-    const today = new Date()
-    const todayString =
-      `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`
-
-    if (formData.date < todayString) {
-      setError("Please select a valid future date.")
+    // Validate date
+    if (formData.date < getTodayDate()) {
+      setError("Please select today or a future date.")
       return
     }
 
-    // Check capacity
+    // Validate capacity
     const capacity = Number(formData.capacity)
 
     if (
@@ -75,7 +84,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
       return
     }
 
-    // Check price
+    // Validate price
     const price = Number(formData.price)
 
     if (
@@ -102,13 +111,19 @@ function AddOpportunityForm({ onAddOpportunity }) {
       features: false,
     }
 
+    // Add the opportunity to the application
     onAddOpportunity(newOpportunity)
-    handleClear()
+
+    // Clear the form and show success message
+    setFormData(initialFormData)
+    setSuccess("Opportunity added successfully!")
+
   }
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
 
+      {/* Form heading */}
       <div className="mb-6">
         <h2 className="text-xl font-bold text-slate-900">
           Add a New Opportunity
@@ -119,13 +134,24 @@ function AddOpportunityForm({ onAddOpportunity }) {
         </p>
       </div>
 
+      {/* Error message */}
       {error && (
-        <p
-          className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700"
+        <div
+          className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
           role="alert"
         >
           {error}
-        </p>
+        </div>
+      )}
+
+      {/* Success message */}
+      {success && (
+        <div
+          className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm font-medium text-green-700"
+          role="status"
+        >
+          ✓ {success}
+        </div>
       )}
 
       <form
@@ -135,10 +161,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* Title */}
         <div>
-          <label
-            htmlFor="title"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="title" className="mb-2 block text-sm font-semibold">
             Opportunity title *
           </label>
 
@@ -155,10 +178,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* Category */}
         <div>
-          <label
-            htmlFor="category"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="category" className="mb-2 block text-sm font-semibold">
             Category *
           </label>
 
@@ -179,10 +199,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* City */}
         <div>
-          <label
-            htmlFor="city"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="city" className="mb-2 block text-sm font-semibold">
             City *
           </label>
 
@@ -199,10 +216,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* Date */}
         <div>
-          <label
-            htmlFor="date"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="date" className="mb-2 block text-sm font-semibold">
             Date *
           </label>
 
@@ -210,7 +224,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
             id="date"
             name="date"
             type="date"
-            min={new Date().getFullYear() + "-" + String(new Date().getMonth() + 1).padStart(2, "0") + "-" + String(new Date().getDate()).padStart(2, "0")}
+            min={getTodayDate()}
             value={formData.date}
             onChange={handleChange}
             required
@@ -220,10 +234,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* Capacity */}
         <div>
-          <label
-            htmlFor="capacity"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="capacity" className="mb-2 block text-sm font-semibold">
             Capacity *
           </label>
 
@@ -243,10 +254,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* Price */}
         <div>
-          <label
-            htmlFor="price"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="price" className="mb-2 block text-sm font-semibold">
             Price (RWF) *
           </label>
 
@@ -266,10 +274,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
 
         {/* Description */}
         <div className="md:col-span-2">
-          <label
-            htmlFor="description"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="description" className="mb-2 block text-sm font-semibold">
             Description *
           </label>
 
@@ -285,7 +290,7 @@ function AddOpportunityForm({ onAddOpportunity }) {
           />
         </div>
 
-        {/* Buttons */}
+        {/* Form buttons */}
         <div className="flex flex-wrap gap-3 md:col-span-2">
           <Button type="submit">
             Add Opportunity
