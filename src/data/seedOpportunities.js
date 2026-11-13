@@ -11,6 +11,7 @@ const seedOpportunities = [
     availableSeats: 12,
     price: 0,
     featured: true,
+    features: false,
   },
   {
     id: 2,
@@ -23,6 +24,7 @@ const seedOpportunities = [
     availableSeats: 20,
     price: 5000,
     featured: true,
+    features: true,
   },
   {
     id: 3,
@@ -35,6 +37,7 @@ const seedOpportunities = [
     availableSeats: 0,
     price: 0,
     featured: false,
+    features: false,
   },
   {
     id: 4,
@@ -47,6 +50,7 @@ const seedOpportunities = [
     availableSeats: 8,
     price: 10000,
     featured: false,
+    features: true,
   },
   {
     id: 5,
@@ -59,6 +63,7 @@ const seedOpportunities = [
     availableSeats: 45,
     price: 0,
     featured: true,
+    features: true,
   },
   {
     id: 6,
@@ -71,6 +76,7 @@ const seedOpportunities = [
     availableSeats: 10,
     price: 7000,
     featured: false,
+    features: false,
   },
   {
     id: 7,
@@ -83,6 +89,7 @@ const seedOpportunities = [
     availableSeats: 15,
     price: 0,
     featured: false,
+    features: true,
   },
   {
     id: 8,
@@ -95,6 +102,7 @@ const seedOpportunities = [
     availableSeats: 0,
     price: 5000,
     featured: true,
+    features: false,
   },
   {
     id: 9,
@@ -107,6 +115,7 @@ const seedOpportunities = [
     availableSeats: 30,
     price: 0,
     featured: true,
+    features: true,
   },
   {
     id: 10,
@@ -119,6 +128,7 @@ const seedOpportunities = [
     availableSeats: 18,
     price: 3000,
     featured: false,
+    features: true,
   },
   {
     id: 11,
@@ -131,6 +141,7 @@ const seedOpportunities = [
     availableSeats: 5,
     price: 0,
     featured: false,
+    features: false,
   },
   {
     id: 12,
@@ -143,6 +154,7 @@ const seedOpportunities = [
     availableSeats: 0,
     price: 8000,
     featured: true,
+    features: true,
   },
 ]
 
