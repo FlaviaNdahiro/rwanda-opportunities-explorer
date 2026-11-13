@@ -3,6 +3,7 @@ import { useState } from "react"
 import OpportunityList from "./components/OpportunityList"
 import OpportunityFilters from "./components/OpportunityFilters"
 import AddOpportunityForm from "./components/AddOpportunityForm"
+import Button from "./components/Button"
 import seedOpportunities from "./data/seedOpportunities"
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
   const [sortBy, setSortBy] = useState("date")
   const [availableOnly, setAvailableOnly] = useState(false)
   const [savedOnly, setSavedOnly] = useState(false)
+
+  // Control the page display
+  const [viewState, setViewState] = useState("normal")
 
   // Save or unsave an opportunity
   function handleToggleSave(id) {
@@ -32,7 +36,7 @@ function App() {
     ])
   }
 
-  // Reset all filters
+  // Reset filters
   function handleReset() {
     setSearch("")
     setCategory("All")
@@ -66,7 +70,7 @@ function App() {
     )
   })
 
-  // Sort opportunities without changing the original array
+  // Sort opportunities
   const sortedOpportunities = [...filteredOpportunities].sort((a, b) => {
     if (sortBy === "title") {
       return a.title.localeCompare(b.title)
@@ -120,17 +124,74 @@ function App() {
           onReset={handleReset}
         />
 
+        {/* Demo buttons */}
+        <section className="mb-6 mt-8 rounded-xl bg-white p-5 shadow-sm">
+          <h2 className="mb-3 text-lg font-bold text-slate-800">
+            Conditional Rendering Demo
+          </h2>
+
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={() => setViewState("normal")}>
+              Show Opportunities
+            </Button>
+
+            <Button
+              variant="secondary"
+              onClick={() => setViewState("loading")}
+            >
+              Show Loading
+            </Button>
+
+            <Button
+              variant="danger"
+              onClick={() => setViewState("error")}
+            >
+              Show Error
+            </Button>
+          </div>
+        </section>
+
         {/* Results count */}
         <p className="mb-5 mt-8 font-medium text-slate-600">
           Showing {sortedOpportunities.length} opportunities
         </p>
 
-        {/* Opportunity cards */}
-        <OpportunityList
-          opportunities={sortedOpportunities}
-          savedIds={savedIds}
-          onToggleSave={handleToggleSave}
-        />
+        {/* Loading, error or opportunity list */}
+        {viewState === "loading" ? (
+          <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
+            <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-emerald-200 border-t-emerald-700"></div>
+
+            <h3 className="text-xl font-bold text-slate-800">
+              Loading opportunities...
+            </h3>
+
+            <p className="mt-2 text-slate-500">
+              Please wait while we prepare the opportunities.
+            </p>
+          </div>
+        ) : viewState === "error" ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-10 text-center">
+            <h3 className="text-xl font-bold text-red-700">
+              Something went wrong!
+            </h3>
+
+            <p className="mt-2 text-red-600">
+              We could not display the opportunities. Please try again.
+            </p>
+
+            <div className="mt-5">
+              <Button onClick={() => setViewState("normal")}>
+                Try Again
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <OpportunityList
+            opportunities={sortedOpportunities}
+            savedIds={savedIds}
+            onToggleSave={handleToggleSave}
+          />
+        )}
 
       </div>
     </main>
