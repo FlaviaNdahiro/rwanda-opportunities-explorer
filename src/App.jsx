@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import OpportunityList from "./components/OpportunityList"
 import OpportunityFilters from "./components/OpportunityFilters"
 import AddOpportunityForm from "./components/AddOpportunityForm"
@@ -8,7 +8,22 @@ import seedOpportunities from "./data/seedOpportunities"
 
 function App() {
   const [opportunities, setOpportunities] = useState(seedOpportunities)
-  const [savedIds, setSavedIds] = useState([])
+
+  // Load saved opportunities from localStorage
+  const [savedIds, setSavedIds] = useState(() => {
+    try {
+      const storedSavedIds = localStorage.getItem("savedOpportunities")
+
+      return storedSavedIds ? JSON.parse(storedSavedIds) : []
+    } catch {
+      return []
+    }
+  })
+
+  // Save changes to localStorage whenever savedIds changes
+  useEffect(() => {
+    localStorage.setItem("savedOpportunities", JSON.stringify(savedIds))
+  }, [savedIds])
 
   // Search and filter states
   const [search, setSearch] = useState("")
