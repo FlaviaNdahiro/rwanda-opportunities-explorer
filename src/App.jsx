@@ -7,9 +7,25 @@ import Button from "./components/Button"
 import seedOpportunities from "./data/seedOpportunities"
 
 function App() {
-  const [opportunities, setOpportunities] = useState(seedOpportunities)
+  // Load opportunities from localStorage when the app starts
+  const [opportunities, setOpportunities] = useState(() => {
+    try {
+      const storedOpportunities = localStorage.getItem("opportunities")
 
-  // Load saved opportunities from localStorage
+      return storedOpportunities
+        ? JSON.parse(storedOpportunities)
+        : seedOpportunities
+    } catch {
+      return seedOpportunities
+    }
+  })
+
+  // Save opportunities whenever the list changes
+  useEffect(() => {
+    localStorage.setItem("opportunities", JSON.stringify(opportunities))
+  }, [opportunities])
+
+  // Load saved opportunity IDs from localStorage
   const [savedIds, setSavedIds] = useState(() => {
     try {
       const storedSavedIds = localStorage.getItem("savedOpportunities")
@@ -20,7 +36,7 @@ function App() {
     }
   })
 
-  // Save changes to localStorage whenever savedIds changes
+  // Save changes to saved opportunities
   useEffect(() => {
     localStorage.setItem("savedOpportunities", JSON.stringify(savedIds))
   }, [savedIds])
